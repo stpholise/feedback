@@ -103,12 +103,12 @@ export default function FeedbackForm({
     <>
       {!success && (
         <form onSubmit={handleSubmit}>
-          <div className="fixed top-3 left-1/2 w-[646px] z-20 -translate-x-1/2 h-[613px] bg-gray-50 rounded-2xl overflow-hidden">
+          <div className="fixed top-0 sm:top-3 left-1/2 w-full md:w-[646px] z-20 -translate-x-1/2 h-full md:h-[613px] bg-gray-50 sm:rounded-2xl overflow-hidden">
             {isSubmitting && <TrippleSpiner />}
             <header
               className={"bg-white h-[113px] px-6 py-8  border border-gray-200"}
             >
-              <h4 className="text-2xl font-semibold text-black">
+              <h4 className="sm:text-2xl text-lg font-semibold text-black">
                 What would you like to bring to our attention?
               </h4>
               <p className="text-[#555B64] text-sm">

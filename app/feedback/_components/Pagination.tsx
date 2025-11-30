@@ -26,7 +26,7 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
 
   return (
     <div className="">
-      <div className="grid grid-cols-4 gap-4 ">
+      <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
         {" "}
         {paginatedItems.map((feedback, index) => (
           <div
@@ -76,8 +76,7 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
                 <p className="text-black  font-mediom text-sm">Bugs</p>
                 <p className="">{feedback.message}</p>
               </div>
-            </div>
-            <div className="">{feedback.type}</div>
+            </div> 
           </div>
         ))}
       </div>
@@ -89,16 +88,27 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
+             className="size-10 border border-[#EAECF0] bg-[#F9FAFB] rounded-full flex items-center justify-center p-1"
           >
-            {" "}
-            Previous
+              <Image 
+            src={currentPage == 1 ? "/icons/chevron-left-gray.svg":"/icons/chevron-left.svg"}
+            alt={"prev-page"}
+            height={14}
+            width={12}
+           />
           </button>
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage == totalPages}
+            className="size-10 border border-[#EAECF0] bg-[#F9FAFB] rounded-full flex items-center justify-center p-1"
           >
-            {" "}
-            Next
+           
+           <Image 
+            src={currentPage == totalPages ? "/icons/chevron-right-gray.svg":"/icons/chevron-right.svg"}
+            alt={"next-page"}
+            height={14}
+            width={12}
+           />
           </button>
         </div>
       </footer>

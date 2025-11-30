@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 import Pagination from "./Pagination";
 
 interface FeedbackType {
@@ -9,12 +9,16 @@ interface FeedbackType {
   type?: string;
 }
 
-const Feedbacks = async ({type} : {type?: string}) => {
+const Feedbacks = async ({
+  type,
+  search = "",
+}: {
+  type?: string;
+  search?: string;
+}) => {
   const params = new URLSearchParams({
-    type: type ||""
-  })
-  
-
+    type: type || "",
+  });
 
   const url = `https://rise-frontend-test-api.developer-a6a.workers.dev/?${params.toString()}`;
   const res = await fetch(url, {
@@ -25,19 +29,23 @@ const Feedbacks = async ({type} : {type?: string}) => {
     console.log("error fetching product");
   }
 
-  
-  const data = (await res.json()) as FeedbackType[]; 
-  let filterdData = data
+  console.log({ search });
 
-  if (type !== ""){
-    filterdData = data.filter((item) => item.type == type )
-  }
+  const data = (await res.json()) as FeedbackType[];
+ 
+
+  const filterValues = () => {
+    return data
+      .filter((item) => (type ? item.type == type : true))
+      .filter((item) =>
+        search ? item.name.toLowerCase().includes(search.toLowerCase()) || item.email.toLowerCase().includes(search.toLowerCase()) || item.message.toLowerCase().includes(search.toLowerCase()): true
+      );
+  };
+ ;
 
   return (
-    <div >
-      {
-    <Pagination items={filterdData} />
-      }
+    <div>
+      {<Pagination items={filterValues()} />}
       {/* {filterdData.map((feedback, index) => (
         <div key={index} className="border border-gray-200 rounded-lg px-4 py-4 text-[#555B64] bg-white text-sm">
           <div className="flex items-center gap-2 mb-4  ">
