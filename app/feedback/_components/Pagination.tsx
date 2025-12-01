@@ -8,7 +8,7 @@ interface FeedbackType {
   email: string;
   phone: string;
   message: string;
-  type?: string;
+  type: string;
 }
 
 const tailwindColors = [
@@ -26,6 +26,7 @@ const getRandomTailwindColors = () => {
   return `${tailwindColors[current].text} ${tailwindColors[current].bg}`;
 };
 const Pagination = ({ items }: { items: FeedbackType[] }) => {
+  console.log("items", items)
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(items.length / itemsPerPage);
@@ -107,7 +108,7 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
                   className="mr-2 "
                 />
                 <div className="">
-                  <p className="text-black  font-mediom text-sm">Bugs</p>
+                  <p className="text-black  font-mediom text-sm capitalize">{feedback.type}s</p>
                   <p className="">{feedback.message}</p>
                 </div>
               </div>

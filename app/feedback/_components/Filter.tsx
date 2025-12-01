@@ -51,7 +51,7 @@ const Filter = () => {
       <div className=" relative">
         <button
           onClick={() => setDisplayFilter((prev) => !prev)}
-          className="sm:hidden z-40"
+          className="sm:hidden z-40  cursor-pointer"
         >
           <Image
             src={"/icons/filter.svg"}
@@ -70,7 +70,7 @@ const Filter = () => {
         >
           <button
             onClick={() => setDisplayFilter(false)}
-            className="absolute top-4 right-4 sm:hidden text-black "
+            className="absolute top-4 right-4 sm:hidden text-black  cursor-pointer"
           >
             close
           </button>
@@ -79,10 +79,10 @@ const Filter = () => {
               onClick={() => updateFilter(item.value)}
               key={index}
               className={clsx(
-                "font-medium px-3 py-1 text-sm rounded-md border border-[#EAECF0] h-8",
+                "font-medium px-3 py-1 text-sm rounded-md border  cursor-pointer h-8",
                 selectedFilter == item.value
-                  ? "bg-[#EDFFFF] border-[#9FDCE1] text-[#006D79] rounded-md"
-                  : "bg-[#F9FAFB] text-black"
+                  ? "bg-[#EDFFFF]  border-[#9FDCE1] text-[#006D79] rounded-md "
+                  : "bg-[#F9FAFB] text-black border-[#EAECF0]"
               )}
             >
               {item.label}
@@ -93,12 +93,13 @@ const Filter = () => {
           <div className="overlay z-10  bg-[rgba(0,0,0,0.2)] backdrop-blur-xs fixed w-full top-0 bottom-0 right-0 left-0 md:hidden"></div>
         )}
       </div>
-      <div className=" w-40 sm:w-60 rounded-2xl h-8 bg-white flex items-center px-3 py-1 text-black text-sm gap-2">
+      <div className=" w-40 sm:w-66 rounded-3xl h-11 bg-white flex items-center px-3 py-1 text-black text-sm gap-2">
         <Image src={"/icons/search.svg"} alt="search" width={16} height={16} />
         <input
           type="text"
           value={search}
-          className="outline-none"
+          className="outline-none h-full py-1"
+          placeholder="Search"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value;
             setSearch(value);
@@ -108,7 +109,7 @@ const Filter = () => {
       </div>
       <button
         onClick={() => setOpenFilterForm((prev) => !prev)}
-        className="sm:rounded-4xl rounded-sm flex items-center gap-2 bg-[#006D79] py-2 px-4 sm:h-13  h-8  "
+        className="sm:rounded-4xl rounded-sm flex items-center gap-2 bg-[#006D79] py-2 px-4 sm:h-11  h-8  cursor-pointer"
       >
         <Image src={"/icons/add.png"} alt="plus sign" width={16} height={16} />{" "}
        <span className="hidden sm:flex">Submit new feedback</span> 
@@ -120,7 +121,7 @@ const Filter = () => {
           <div
             role="button"
             onClick={() => setOpenFilterForm(false)}
-            className="fixed z-10 top-0 right-0 bottom-0 left-0 bg-[rgba(0,0,0,0.2)] backdrop-blur-xs "
+            className="fixed z-10 top-0 right-0 bottom-0 left-0 bg-[rgba(0,0,0,0.2)] backdrop-blur-xs cursor-pointer "
           ></div>
         </div>
       )}

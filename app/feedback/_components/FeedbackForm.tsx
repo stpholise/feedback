@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { TrippleSpiner } from "@/app/_components/Loading";
 import clsx from "clsx";
+import { toast } from "react-toastify";
 
 export default function FeedbackForm({
   setOpenFilterForm,
@@ -81,8 +82,8 @@ export default function FeedbackForm({
         }),
       });
       if (!response.ok) {
-        const serverMessage = await response.text();  
-        throw new Error(`${response.status} error posting message ${serverMessage}`);
+        const serverMessage = await response.text();
+        throw new Error(` Error : ${serverMessage}`);
       }
 
       setName("");
@@ -92,7 +93,10 @@ export default function FeedbackForm({
       setSuccess(true);
     } catch (err) {
       if (err instanceof Error) {
-        alert(err.message); 
+        toast.error(err.message, {
+          theme: "light", 
+          hideProgressBar: true
+        });
         setIsSubmitting(false);
       }
     } finally {
@@ -104,28 +108,26 @@ export default function FeedbackForm({
     <>
       {!success && (
         <form onSubmit={handleSubmit}>
-          <div className="fixed top-0 sm:top-3 left-1/2 w-full md:w-[646px] z-20 -translate-x-1/2 h-full md:h-[613px] bg-gray-50 sm:rounded-2xl overflow-hidden">
+          <div className="fixed top-0 sm:top-1/2 left-1/2 w-full md:w-[480px]  max-h-[550px]  z-20  -translate-1/2  bg-gray-50 sm:rounded-2xl overflow-y-auto overflow-x-hidden">
             {isSubmitting && <TrippleSpiner />}
-            <header
-              className={"bg-white h-[113px] px-6 py-8  border border-gray-200"}
-            >
+            <div className={"bg-white h-fit px-6 py-6  border border-gray-200"}>
               <h4 className="sm:text-2xl text-lg font-semibold text-black">
                 What would you like to bring to our attention?
               </h4>
               <p className="text-[#555B64] text-sm">
                 Kindly fill the details below to submit.
               </p>
-            </header>
-            <div className="px-6 py-8 h-full text-black text-sm flex flex-col gap-4 overflow-y-auto">
+            </div>
+            <div className="px-6 py-8  text-black text-sm flex flex-col gap-4 overflow-y-auto ">
               <div className="">
                 <div
                   className={clsx(
-                    "h-14 rounded-2xl flex items-center bg-white py-2 px-4 border  relative",
+                    "h-12 rounded-xl flex items-center bg-white  border  relative",
                     error.name ? "border-red-500" : "border-gray-200"
                   )}
                 >
                   {name && (
-                    <p className="absolute -top-2 backdrop-blur left-8 text-xs text-[#747881]">
+                    <p className="absolute -top-2 backdrop-blur left-4 text-xs text-[#747881] bg-white px-1">
                       Full name
                     </p>
                   )}
@@ -139,7 +141,7 @@ export default function FeedbackForm({
                       const errorMsg = validateField("name", value);
                       setError((prev) => ({ ...prev, name: errorMsg }));
                     }}
-                    className="h-full w-full outline-none"
+                    className="h-full w-full outline-none py-2 px-4"
                   />
                 </div>
                 {error.name && (
@@ -148,27 +150,31 @@ export default function FeedbackForm({
               </div>
               <div className="relative">
                 {email && (
-                  <p className="absolute -top-2 backdrop-blur left-8 text-xs text-[#747881]  ">
+                  <p className="absolute -top-2 backdrop-blur left-4 text-xs text-[#747881] bg-white px-1">
                     Email
                   </p>
                 )}
                 <div
                   className={clsx(
-                    "h-14 rounded-2xl flex items-center  bg-white py-2 px-4 border ",
+                    "h-12 rounded-xl flex items-center px-4  bg-white  border ",
                     error.email ? "border-red-500" : "border-gray-200"
                   )}
                 >
-                  <div className="mr-2 border-r pr-2 border-gray-200">
+                  <label
+                    htmlFor="email"
+                    className="mr-2 border-r pr-2 border-gray-200"
+                  >
                     <Image
                       src={"/icons/mail-line.svg"}
                       alt="email"
                       width={20}
                       height={20}
                     />
-                  </div>
+                  </label>
                   <input
                     type="text"
                     placeholder="Email"
+                    id="email"
                     value={email}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       const value = e.target.value;
@@ -176,7 +182,7 @@ export default function FeedbackForm({
                       const errorMsg = validateField("email", value);
                       setError((prev) => ({ ...prev, email: errorMsg }));
                     }}
-                    className="h-full w-full outline-none text-sm"
+                    className="h-full w-full outline-none text-sm py-2 "
                   />
                 </div>
                 {error.email && (
@@ -184,14 +190,19 @@ export default function FeedbackForm({
                 )}
               </div>
               <div className="">
-                <div className="h-14 rounded-2xl flex items-center  bg-white py-2 px-4 border border-gray-200 relative">
-                  {
-                    <p className="absolute -top-2 backdrop-blur left-8 text-xs text-[#747881]  ">
+                <div
+                  className={clsx(
+                    "h-12 rounded-xl flex items-center px-4  bg-white  border relative",
+                    error.type ? "border-red-500" : "border-gray-200"
+                  )}
+                >
+                  {type && (
+                    <p className="absolute -top-2 backdrop-blur left-4 text-xs text-[#747881] bg-white px-1 ">
                       Feedback type
                     </p>
-                  }
+                  )}
                   <select
-                    className="w-full outline-none "
+                    className="w-full  py-2 h-full outline-none "
                     value={type}
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                       const value = e.target.value;
@@ -217,18 +228,18 @@ export default function FeedbackForm({
               <div className="">
                 <div
                   className={clsx(
-                    "min-h-22 rounded-2xl  bg-white py-2 px-3 border border-gray-200 relative",
+                    "  rounded-xl  bg-white border border-gray-200 relative",
                     error.message ? "border-red-500" : "border-gray-200"
                   )}
                 >
                   {message && (
-                    <p className="absolute -top-2 backdrop-blur left-8 text-xs text-[#747881] ">
+                    <p className="absolute -top-2 backdrop-blur left-4 text-xs text-[#747881] bg-white px-1">
                       Message
                     </p>
                   )}
                   <textarea
                     placeholder="Enter feedback message..."
-                    className="h-full w-full outline-none"
+                    className="h-full min-h-18 w-full outline-none  py-2 px-3"
                     value={message}
                     onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
                       const value = e.target.value;
@@ -244,35 +255,35 @@ export default function FeedbackForm({
                 )}
               </div>
             </div>
-            <footer
+            <div
               className={
-                " absolute bottom-0 w-full bg-white h-[108px] px-6 py-8  border border-gray-200 flex gap-4"
+                "  w-full bg-white h-[108px] px-6 py-6  border border-gray-200 flex items-center gap-4"
               }
             >
               <button
                 type="button"
                 onClick={() => setOpenFilterForm(false)}
-                className="bg-gray-100 text-[#006D79] inline-block w-1/2 rounded-4xl font-semibold h-[52px]"
+                className="bg-gray-100 text-[#006D79] inline-block w-1/2 rounded-4xl font-semibold h-[52px] cursor-pointer capitalize"
               >
                 close
               </button>
               <button
                 type="submit"
                 className={clsx(
-                  "inline-block w-1/2  text-white rounded-4xl font-semibold h-[52px]",
+                  "inline-block w-1/2  text-white rounded-4xl font-semibold h-[52px] cursor-pointer",
                   Object.values(error).every((err) => !err)
-                    ? "bg-[#9FDCE1]"
-                    : "bg-gray-200"
+                    ? "bg-[#006D79]"
+                    : "bg-[#9FDCE1]"
                 )}
               >
                 Submit{" "}
               </button>
-            </footer>
+            </div>
           </div>
         </form>
       )}
       {success && (
-        <div className="fixed top-1/2 -translate-y-1/2 left-1/2 w-[646px] z-20 -translate-x-1/2 h-[317px] bg-gray-50 rounded-2xl overflow-hidden">
+        <div className="fixed top-1/2 -translate-y-1/2 left-1/2 w-full sm:w-[480px] z-20 -translate-x-1/2 h-[317px] bg-gray-50 rounded-2xl overflow-hidden">
           <div className="px-6 py-12 h-[calc(100%-108px)] text-black text-sm flex flex-col gap-1 items-center justify-center ">
             <Image
               src={"/icons/emotion-happy-fill.svg"}
@@ -287,21 +298,21 @@ export default function FeedbackForm({
               We have received your feedback! Our team will attend to it.
             </p>
           </div>
-          <footer
+          <div
             className={
-              " absolute bottom-0 w-full bg-white h-[108px] px-6 py-8  border border-gray-200 flex item-center justify-center gap-4"
+              "mt-auto w-full bg-white h-[108px] px-6 py-8  border-t border-gray-200 flex item-center justify-center gap-4"
             }
           >
             <button
               type="button"
               onClick={() => setOpenFilterForm(false)}
               className={
-                "bg-gray-100 text-[#006D79] inline-block w-1/2 rounded-4xl font-semibold h-[52px]"
+                "bg-gray-100 text-[#006D79] inline-block w-1/2 rounded-4xl font-semibold h-[52px] cursor-pointer capitalize"
               }
             >
               close
             </button>
-          </footer>
+          </div>
         </div>
       )}
     </>

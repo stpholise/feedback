@@ -33,7 +33,7 @@ const Feedbacks = async ({
 
   const data = (await res.json()) as FeedbackType[];
  
-
+console.log("data")
   const filterValues = () => {
     return data
       .filter((item) => (type ? item.type == type : true))
