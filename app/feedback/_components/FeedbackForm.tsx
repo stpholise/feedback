@@ -94,8 +94,8 @@ export default function FeedbackForm({
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message, {
-          theme: "light", 
-          hideProgressBar: true
+          theme: "light",
+          hideProgressBar: true,
         });
         setIsSubmitting(false);
       }
@@ -108,7 +108,7 @@ export default function FeedbackForm({
     <>
       {!success && (
         <form onSubmit={handleSubmit}>
-          <div className="fixed top-0 sm:top-1/2 left-1/2 w-full md:w-[480px]  max-h-[550px]  z-20  -translate-1/2  bg-gray-50 sm:rounded-2xl overflow-y-auto overflow-x-hidden">
+          <div className="fixed flex flex-col top-14 h-[calc(100%-60px)] animate-slideUp xs:animate-none xs:h-auto xs:top-1/2 xs:left-1/2 w-full  md:w-[480px]  xs:max-h-[550px]  z-20 xs:transform-none xs:-translate-1/2  bg-gray-50 sm:rounded-2xl overflow-y-auto overflow-x-hidden">
             {isSubmitting && <TrippleSpiner />}
             <div className={"bg-white h-fit px-6 py-6  border border-gray-200"}>
               <h4 className="sm:text-2xl text-lg font-semibold text-black">
@@ -257,7 +257,7 @@ export default function FeedbackForm({
             </div>
             <div
               className={
-                "  w-full bg-white h-[108px] px-6 py-6  border border-gray-200 flex items-center gap-4"
+                "  w-full bg-white h-[108px] px-6 py-6 mt-auto  border-t border-gray-200 flex items-center gap-4"
               }
             >
               <button
@@ -283,35 +283,37 @@ export default function FeedbackForm({
         </form>
       )}
       {success && (
-        <div className="fixed top-1/2 -translate-y-1/2 left-1/2 w-full sm:w-[480px] z-20 -translate-x-1/2 h-[317px] bg-gray-50 rounded-2xl overflow-hidden">
-          <div className="px-6 py-12 h-[calc(100%-108px)] text-black text-sm flex flex-col gap-1 items-center justify-center ">
-            <Image
-              src={"/icons/emotion-happy-fill.svg"}
-              alt="happy"
-              width={40}
-              height={40}
-            />
-            <h3 className="font-semibold text-black text-2xl h-full flex flex-col items-center justify-center">
-              Thank you for your feedback
-            </h3>
-            <p className="text-gray-600 text-sm">
-              We have received your feedback! Our team will attend to it.
-            </p>
-          </div>
-          <div
-            className={
-              "mt-auto w-full bg-white h-[108px] px-6 py-8  border-t border-gray-200 flex item-center justify-center gap-4"
-            }
-          >
-            <button
-              type="button"
-              onClick={() => setOpenFilterForm(false)}
+        <div className="fixed top-1/2 -translate-y-1/2 left-1/2 w-full sm:w-[480px] z-20 -translate-x-1/2 h-[317px]  ">
+          <div className=" bg-gray-50 rounded-2xl overflow-hidden">
+            <div className="px-6 py-12 h-[calc(100%-108px)] text-black text-sm flex flex-col gap-1 items-center justify-center ">
+              <Image
+                src={"/icons/emotion-happy-fill.svg"}
+                alt="happy"
+                width={40}
+                height={40}
+              />
+              <h3 className="font-semibold text-black text-2xl h-full flex flex-col items-center   text-center justify-center">
+                Thank you for your feedback
+              </h3>
+              <p className="text-gray-600 text-sm text-center">
+                We have received your feedback! Our team will attend to it.
+              </p>
+            </div>
+            <div
               className={
-                "bg-gray-100 text-[#006D79] inline-block w-1/2 rounded-4xl font-semibold h-[52px] cursor-pointer capitalize"
+                "mt-auto w-full bg-white h-[108px] px-6 py-8  border-t border-gray-200 flex item-center justify-center gap-4"
               }
             >
-              close
-            </button>
+              <button
+                type="button"
+                onClick={() => setOpenFilterForm(false)}
+                className={
+                  "bg-gray-100 text-[#006D79] inline-block w-1/2 rounded-4xl font-semibold h-[52px] cursor-pointer capitalize"
+                }
+              >
+                close
+              </button>
+            </div>
           </div>
         </div>
       )}

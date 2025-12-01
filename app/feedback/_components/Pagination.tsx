@@ -26,7 +26,7 @@ const getRandomTailwindColors = () => {
   return `${tailwindColors[current].text} ${tailwindColors[current].bg}`;
 };
 const Pagination = ({ items }: { items: FeedbackType[] }) => {
-  console.log("items", items)
+  console.log("items", items);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(items.length / itemsPerPage);
@@ -50,10 +50,15 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
   return (
     <div className="">
       {paginatedItems.length < 1 && (
-        <div className="h-[40vh] text-black text-center flex items-center justify-center">
-          <p className="text-lg">
-            <span className="text-2xl">404:</span> NO Feedback found{" "}
-          </p>
+        <div className="h-[40vh] text-black text-center flex flex-col items-center justify-center gap-4">
+          <p className="text-lg">NO Feedback found </p>
+          <Image
+            src={"/icons/box.svg"}
+            alt="not found"
+            width={60}
+            height={40}
+            className="text-2xl"
+          />
         </div>
       )}
       {paginatedItems.length > 0 && (
@@ -108,7 +113,9 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
                   className="mr-2 "
                 />
                 <div className="">
-                  <p className="text-black  font-mediom text-sm capitalize">{feedback.type}s</p>
+                  <p className="text-black  font-mediom text-sm capitalize">
+                    {feedback.type}s
+                  </p>
                   <p className="">{feedback.message}</p>
                 </div>
               </div>
@@ -116,45 +123,47 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
           ))}
         </div>
       )}
-      {totalPages > 0 && <footer className="h-20 mt-4 text-black text-sm flex justify-between items-center">
-        <div className="font-semibold">
-          Page {currentPage} of {totalPages}
-        </div>
-        <div className="flex gap-4">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="size-10 border border-[#EAECF0] bg-[#F9FAFB] rounded-full flex items-center justify-center p-1"
-          >
-            <Image
-              src={
-                currentPage == 1
-                  ? "/icons/chevron-left-gray.svg"
-                  : "/icons/chevron-left.svg"
-              }
-              alt={"prev-page"}
-              height={18}
-              width={16}
-            />
-          </button>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage == totalPages}
-            className="size-10 border border-[#EAECF0] bg-[#F9FAFB] rounded-full flex items-center justify-center p-1"
-          >
-            <Image
-              src={
-                currentPage == totalPages
-                  ? "/icons/chevron-right-gray.svg"
-                  : "/icons/chevron-right.svg"
-              }
-              alt={"next-page"}
-              height={18}
-              width={16}
-            />
-          </button>
-        </div>
-      </footer>}
+      {totalPages > 0 && (
+        <footer className="h-20 mt-4 text-black text-sm flex justify-between items-center">
+          <div className="font-semibold">
+            Page {currentPage} of {totalPages}
+          </div>
+          <div className="flex gap-4">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="size-10 border border-[#EAECF0] bg-[#F9FAFB] rounded-full flex items-center justify-center p-1"
+            >
+              <Image
+                src={
+                  currentPage == 1
+                    ? "/icons/chevron-left-gray.svg"
+                    : "/icons/chevron-left.svg"
+                }
+                alt={"prev-page"}
+                height={18}
+                width={16}
+              />
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage == totalPages}
+              className="size-10 border border-[#EAECF0] bg-[#F9FAFB] rounded-full flex items-center justify-center p-1"
+            >
+              <Image
+                src={
+                  currentPage == totalPages
+                    ? "/icons/chevron-right-gray.svg"
+                    : "/icons/chevron-right.svg"
+                }
+                alt={"next-page"}
+                height={18}
+                width={16}
+              />
+            </button>
+          </div>
+        </footer>
+      )}
     </div>
   );
 };
