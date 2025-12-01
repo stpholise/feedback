@@ -6,13 +6,25 @@
 }
 
 @theme inline {
+  --breakpoint-2xs: 375px;
+  --breakpoint-xs: 30rem;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --animate-slideUp: slideUp 0.7s ease-in-out;
   --animate-rotate-one: rotate-one 1s linear infinite;
   --animate-rotate-two: rotate-two 1s linear infinite;
   --animate-rotate-three: rotate-three 1s linear infinite;
+}
+
+@keyframes slideUp{
+  0%{
+      transform: translateY(100%);
+  }
+  to{
+    transform: translateY(0)
+  }
 }
 
 @keyframes rotate-one {
