@@ -114,7 +114,7 @@ const Filter = () => {
        <span className="hidden sm:flex">Submit new feedback</span> 
       </button>
       {openFilterForm && (
-        <>
+        <div className="fixed top-0 right-0 left-0 bottom-0">
           <FeedbackForm setOpenFilterForm={setOpenFilterForm} />
 
           <div
@@ -122,7 +122,7 @@ const Filter = () => {
             onClick={() => setOpenFilterForm(false)}
             className="fixed z-10 top-0 right-0 bottom-0 left-0 bg-[rgba(0,0,0,0.2)] backdrop-blur-xs "
           ></div>
-        </>
+        </div>
       )}
     </div>
   );

@@ -51,52 +51,53 @@ export default function FeedbackForm({
   };
 
   const computeErrors = () => ({
-  name: validateField("name", name),
-  email: validateField("email", email),
-  type: validateField("type", type),
-  message: validateField("message", message),
-});
+    name: validateField("name", name),
+    email: validateField("email", email),
+    type: validateField("type", type),
+    message: validateField("message", message),
+  });
   const validateForm = () => {
-    const feildsError = computeErrors()
-    setError(feildsError)
-    return !error.name && !error.email && !error.type && !error.message;
+    const fieldsError = computeErrors();
+    setError(fieldsError);
+    return Object.values(fieldsError).every((err) => !err);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!validateForm()) return
-      try {
-        setIsSubmitting(true);
-        const url = "https://rise-frontend-test-api.developer-a6a.workers.dev/";
-        const response = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            message,
-            type,
-          }),
-        });
-        if (!response.ok) {
-          throw new Error("error posting message");
-        }
+    if (!validateForm()) return;
+    try {
+      setIsSubmitting(true);
+      const url = "https://rise-frontend-test-api.developer-a6a.workers.dev/";
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email.trim(),
+          message: message,
+          type: type,
+        }),
+      });
+      if (!response.ok) {
+        const serverMessage = await response.text();  
+        throw new Error(`${response.status} error posting message ${serverMessage}`);
+      }
 
-        setName("");
-        setEmail("");
-        setMessage("");
-        setType("");
-        setSuccess(true);
-      } catch (err) {
-        if (err instanceof Error) {
-          console.log(err.message);
-          setIsSubmitting(false);
-        }
-      } finally {
+      setName("");
+      setEmail("");
+      setMessage("");
+      setType("");
+      setSuccess(true);
+    } catch (err) {
+      if (err instanceof Error) {
+        alert(err.message); 
         setIsSubmitting(false);
       }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -170,7 +171,7 @@ export default function FeedbackForm({
                     placeholder="Email"
                     value={email}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      const value = e.target.value.trim();
+                      const value = e.target.value;
                       setEmail(value);
                       const errorMsg = validateField("email", value);
                       setError((prev) => ({ ...prev, email: errorMsg }));
@@ -191,6 +192,7 @@ export default function FeedbackForm({
                   }
                   <select
                     className="w-full outline-none "
+                    value={type}
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                       const value = e.target.value;
                       setType(value);
@@ -258,7 +260,9 @@ export default function FeedbackForm({
                 type="submit"
                 className={clsx(
                   "inline-block w-1/2  text-white rounded-4xl font-semibold h-[52px]",
-                 Object.values(error).every(err =>  !err) ? "bg-[#9FDCE1]":"bg-gray-200"
+                  Object.values(error).every((err) => !err)
+                    ? "bg-[#9FDCE1]"
+                    : "bg-gray-200"
                 )}
               >
                 Submit{" "}
@@ -304,4 +308,4 @@ export default function FeedbackForm({
   );
 }
 
-const feedbackTypes = ["bug", "feature request", "other"];
+const feedbackTypes = ["bug", "feature", "other"];

@@ -29,7 +29,7 @@ const Feedbacks = async ({
     console.log("error fetching product");
   }
 
-  console.log({ search });
+  
 
   const data = (await res.json()) as FeedbackType[];
  
