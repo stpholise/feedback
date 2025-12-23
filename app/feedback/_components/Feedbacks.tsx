@@ -1,3 +1,4 @@
+"use server"
 import Pagination from "./Pagination";
 import { toast } from "react-toastify";
 
@@ -26,28 +27,16 @@ const Feedbacks = async ({
     cache: "no-store",
   });
   if (!res.ok) {
-    toast.error("error fetching product",
-      {
-        theme: "light",
-        hideProgressBar: true
-      }
-    );
+    toast.error("error fetching product", {
+      theme: "light",
+      hideProgressBar: true,
+    });
   }
 
   const data = (await res.json()) as FeedbackType[];
 
-  const filterValues = () => {
-    return data
-      .filter((item) => (type ? item.type == type : true))
-      .filter((item) =>
-        search
-          ? item.name.toLowerCase().includes(search.toLowerCase()) ||
-            item.email.toLowerCase().includes(search.toLowerCase()) ||
-            item.message.toLowerCase().includes(search.toLowerCase())
-          : true
-      );
-  };
-  return <div>{<Pagination items={filterValues()} />}</div>;
+ 
+  return <div>{<Pagination items={data} search={search} type={type}/>}</div>;
 };
 
 export default Feedbacks;

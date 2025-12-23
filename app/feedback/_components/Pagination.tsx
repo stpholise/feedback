@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import clsx from "clsx";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 interface FeedbackType {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
   message: string;
   type: string;
 }
@@ -22,10 +24,17 @@ const tailwindColors = [
 
 const getRandomTailwindColors = () => {
   const current = Math.floor(Math.random() * tailwindColors.length);
-
   return `${tailwindColors[current].text} ${tailwindColors[current].bg}`;
 };
-const Pagination = ({ items }: { items: FeedbackType[] }) => {
+const Pagination = ({
+  items,
+  search,
+  type,
+}: {
+  items: FeedbackType[];
+  search?: string;
+  type?: string;
+}) => {
   console.log("items", items);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
@@ -42,7 +51,32 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
     restetCurrentPage();
   }, [items]);
 
-  const paginatedItems = items.slice(
+  const storedFeedbacks = useSelector(
+    (state: RootState) => state.storedFeedbacks
+  );
+  const storedFeedbacksEmails = new Set(
+    storedFeedbacks.map((item) => item.email)
+  );
+
+  const filteredItems = items.filter(
+    (item) => !storedFeedbacksEmails.has(item.email)
+  );
+
+  const sortedItems = [...storedFeedbacks, ...filteredItems];
+  const filterValues = () => {
+    return sortedItems.filter((item) =>
+      type
+        ? item.type
+        : search
+        ? item.name.toLowerCase().includes(search.toLowerCase()) ||
+          item.email.toLowerCase().includes(search.toLowerCase()) ||
+          item.message.toLowerCase().includes(search.toLowerCase())
+        : true
+    );
+  };
+
+  const totalValues = filterValues();
+  const paginatedItems = totalValues.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -62,7 +96,10 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
         </div>
       )}
       {paginatedItems.length > 0 && (
-        <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
+        <div
+          data-testid="pagination"
+          className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 "
+        >
           {paginatedItems.map((feedback, index) => (
             <div
               key={index}
@@ -124,7 +161,7 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
         </div>
       )}
       {totalPages > 0 && (
-        <footer className="h-20 mt-4 text-black text-sm flex justify-between items-center">
+        <div className="pagination h-20 mt-4 text-black text-sm flex justify-between items-center">
           <div className="font-semibold">
             Page {currentPage} of {totalPages}
           </div>
@@ -162,7 +199,7 @@ const Pagination = ({ items }: { items: FeedbackType[] }) => {
               />
             </button>
           </div>
-        </footer>
+        </div>
       )}
     </div>
   );

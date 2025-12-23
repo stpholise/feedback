@@ -49,13 +49,13 @@ const Filter = () => {
 
   return (
     <div className="flex mt-2 sm:mt-0 flex-col-reverse sm:flex-col  lg:flex xl:flex-row xl:items-center  justify-between w-full  py-2">
-      <div className="flex  relative lg:w-1/2">
+      <div className="flex  relative ">
         
         <div
           className={clsx(
-            "static     bg-[#efefef] transform  duration-500 ease-in-out  py-4 w-full  px-4 sm:px-0 flex flex-row gap-3 overflow-x-scroll",
+            "static     bg-[#efefef] transform  duration-500 ease-in-out  py-4 w-full xs:w-fit px-4 sm:px-0 flex flex-row gap-3 overflow-x-scroll xs:overflow-x-auto",
             
-               "flex translate-y-0 opacity-100 h-fit   sm:w-fit"
+               "flex translate-y-0 opacity-100 h-fit   "
                
           )}
         >
@@ -80,7 +80,7 @@ const Filter = () => {
         )}
       </div>
       <div className="flex flex-col xs:flex-row lg:flex-row justify-between w-full  xl:w-1/2 gap-4">
-        <div className=" w-full xs:w-50 sm:w-66 rounded-3xl h-9 sm:h-11 bg-white flex items-center px-3 py-1 text-black text-sm gap-2">
+        <div className=" w-full xs:w-1/2  sm:w-66 rounded-3xl h-9 sm:h-11 bg-white flex items-center px-3 py-1 text-black text-sm gap-2">
           <Image
             src={"/icons/search.svg"}
             alt="search"
@@ -101,7 +101,7 @@ const Filter = () => {
         </div>
         <button
           onClick={() => setOpenFilterForm((prev) => !prev)}
-          className="rounded-4xl flex items-center justify-center gap-2 bg-[#006D79] py-2 px-4 sm:h-11 w-full xs:w-66  h-9 sm:w-fit cursor-pointer"
+          className="rounded-4xl flex items-center justify-center gap-2 bg-[#006D79] py-2 px-4 sm:h-11 w-full   h-9 sm:w-fit cursor-pointer"
         >
           <Image
             src={"/icons/add.png"}
