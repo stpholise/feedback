@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Work_Sans, } from "next/font/google";
+import { Geist, Geist_Mono, Work_Sans } from "next/font/google";
 import "./globals.css";
- 
+import Providers from "./Providers";
+
 import Header from "./_components/Header";
 import { ToastContainer } from "react-toastify";
 
@@ -15,9 +16,9 @@ export const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const workSans = Work_Sans({ 
-  subsets:["latin"]
-})
+const workSans = Work_Sans({
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -34,9 +35,11 @@ export default function RootLayout({
       <body
         className={`${workSans.className} ${geistMono.variable} ${geistSans.variable} antialiased w-full min-h-screen border  `}
       >
-        <ToastContainer />
-        <Header />
-        {children}
+        <Providers>
+          <ToastContainer />
+          <Header />
+          {children}
+        </Providers>
       </body>
     </html>
   );

@@ -5,6 +5,8 @@ import { useState } from "react";
 import { TrippleSpiner } from "@/app/_components/Loading";
 import clsx from "clsx";
 import { toast } from "react-toastify";
+import { addFeedback } from "@/app/store/FeedbackSlice";
+import { useDispatch } from "react-redux";
 
 export default function FeedbackForm({
   setOpenFilterForm,
@@ -23,6 +25,8 @@ export default function FeedbackForm({
     type?: string;
     message?: string;
   }>({});
+  const dispatch = useDispatch()
+
 
   const validateField = (field: string, value: string) => {
     switch (field) {
@@ -85,12 +89,13 @@ export default function FeedbackForm({
         const serverMessage = await response.text();
         throw new Error(` Error : ${serverMessage}`);
       }
-
+      dispatch(addFeedback({name, email, message, type}))
       setName("");
       setEmail("");
       setMessage("");
       setType("");
       setSuccess(true);
+      
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message, {

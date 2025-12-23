@@ -1,15 +1,16 @@
+"use server"
 import Feedbacks from "./_components/Feedbacks";
 import Filter from "./_components/Filter";
 import Image from "next/image";
+ import { Geist } from "next/font/google";
 
-import { Geist } from "next/font/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const page = async({searchParams}: {searchParams: Promise<{ type?: string, search?: string }>}) => {
+const Page = async({searchParams}: {searchParams: Promise<{ type?: string, search?: string }>}) => {
   const params = await searchParams;
   const type =  params.type ?? ""
   const search = params.search ??""
@@ -17,7 +18,7 @@ const page = async({searchParams}: {searchParams: Promise<{ type?: string, searc
   return (
     <div className=" px-4 lg:px-8 py-8">
       <div className="">
-        <h2 className={`${geistSans} font-semibold text-black text-[32px]  font-geist-sans`}>
+        <h2   className={`${geistSans.className} font-semibold text-black text-[32px]  font-geist-sans`}>
           Got a complain or feedback?
         </h2>
         <div className="flex items-center">
@@ -54,4 +55,4 @@ const team =[
   "/team/user-4.png",
 ]
 
-export default page;
+export default Page;
